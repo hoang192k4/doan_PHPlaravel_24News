@@ -94,23 +94,24 @@
 <!-- Sidebar -->
 <aside class="sidebar navbar-default" role="navigation">
     <div class="sidebar-nav navbar-collapse">
-        <ul class="nav" id="side-menu">
-            <li class="sidebar-search">
-                <div class="input-group custom-search-form">
-                    <input type="text" class="form-control" placeholder="Search...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-                <!-- /input-group -->
-            </li>
+        <ul class="nav" id="side-menu" style="margin-top:5px">
             <li>
                 <a href="{{route('index_admin')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>   
             <li>
-                <a href="{{route('news_admin')}}"><i class="fa fa-table fa-fw"></i>News</a>
+                <a href="{{route('account.index')}}"><i class="far fa-user" style="font-size:15px ; padding:0 3px;"></i></i>Account</a>
+            </li>
+            <li>
+                <a href="{{route('news.index')}}"><i class="fa fa-table fa-fw"></i>News</a>
+            </li>
+            <li>
+                <a href="{{route('category.index')}}"><i class="fa fa-files-o fa-fw"></i>Category</a>
+            </li>
+            <li>
+                <a href="{{route('subscriber.index')}}"><i class="far fa-registered" style="font-size:15px ; padding:0 3px;"></i>Subcriber</a>
+            </li>
+            <li>
+                <a href="{{route('contact.index')}}"><i class="far fa-address-card" style="font-size:15px ; padding:0 3px;"></i>Contact</a>
             </li>
         </ul>
     </div>

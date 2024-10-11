@@ -1,16 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\View\view;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+
+use App\Models\CategoryAdmin;
+use App\Models\ContactAdmin;
+use App\Models\SubscriberAdmin;
 
 class AdminController extends Controller
 {
-    public function index_admin():view{
+    public function index_admin(): view
+    {
         return view('admin.pages.index_admin');
     }
-    public function news_admin():view{
-        return view('admin.pages.news_admin');
+    public function login_admin(): view
+    {
+        return view('admin.pages.login_admin');
     }
 }

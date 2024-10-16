@@ -11,16 +11,20 @@ class SubscriberController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $subcribers = SubscriberAdmin::layAll();
-        return view('admin.pages.subscriber_admin')->with("subcribers", $subcribers);
+        $keyword = $request->input('keyword');
+        $subcribers = $keyword ? SubscriberAdmin::search($keyword) : SubscriberAdmin::layAll();
+        if ($subcribers->isNotEmpty())
+            return view('admin.pages.subscriber_admin')->with("subcribers", $subcribers);
+        else
+            return view('admin.pages.subscriber_admin')->with("subcribers", $subcribers)->with('message', "Không có kết quả tìm kiếm!");
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create()    
     {
         //
     }
@@ -30,7 +34,9 @@ class SubscriberController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->input('subscriber'))
+        $result = SubscriberAdmin::create($request->input('subscriber'));
+        return redirect()->route("index");
     }
 
     /**
@@ -63,10 +69,9 @@ class SubscriberController extends Controller
     public function destroy(string $id)
     {
         $result = SubscriberAdmin::deleteSubscriber($id);
-        if ($result){
+        if ($result) {
             return redirect('admin/subscriber')->with("success", "Xóa thành công");
-        }
-        else
+        } else
             return redirect('admin/subscriber')->with("error", "Xóa không thành công");
     }
 }

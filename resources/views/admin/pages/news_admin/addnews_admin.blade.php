@@ -24,7 +24,7 @@
                       </div>
                     <div class="form-group">
                         <label for="content">Content</label>
-                        <input type="text" class="form-control" id="content" name="content" >
+                        <textarea name="content" id="content" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="image">Image</label>

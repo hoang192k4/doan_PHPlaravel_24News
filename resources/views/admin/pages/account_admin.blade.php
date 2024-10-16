@@ -29,24 +29,30 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">Quản lý tài khoản</h1>
                     <div style="display: flex; align-items:center;margin-bottom:10px">
-                        <div style="width: 19%">
+                        <div style="width: 19%; display:flex;justify-content:space-around">
                             <button onclick="showhidden_account()" style="padding:5px 0">
                                 <a style="padding :10px 50px;text-decoration:none;" href="#{{-- {{ route('account.create')}} --}}">Add</a>
+                            
+                            </button>
+                            <button style="padding:5px 0">
+                                <a style="padding :10px ;text-decoration:none;" href="{{ route('account.index')}}"><i class="fas fa-sync"></i></a>
                             </button>
                         </div>
                         <div style="width:80%; margin:0 auto; ">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
+                            <form action="{{ route('account.index') }}" method="GET">
+                                <div class="input-group custom-search-form">
+                                    <input type="text" class="form-control" value="{{request()->input('keyword')}}" placeholder="Search..." name="keyword">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     @if (session('success'))
-                        <h3 style="color: green">{{ session('success') }}</h3>
+                        <h3 style="color: green;">{{ session('success') }}</h3>
                     @endif
                     @if (session('error'))
                         <h3 style="color: red">{{ session('error') }}</h3>
@@ -69,21 +75,21 @@
                     </div>
                     {{-- edit account --}}
                     @if (isset($account))
-                            <form action="{{ route('account.update', $account->id) }}" method="POST" style="padding:10px">
-                                @csrf
-                                @method('PUT')
-                                <div class="form-group">
-                                    <label for="username">UserName</label>
-                                    <input type="text" class="form-control" id="username" name="username"
-                                        value="{{ $account->username }}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="text" class="form-control" id="password" name="password"
-                                        value="{{ $account->password }}">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
+                        <form action="{{ route('account.update', $account->id) }}" method="POST" style="padding:10px">
+                            @csrf
+                            @method('PUT')
+                            <div class="form-group">
+                                <label for="username">UserName</label>
+                                <input type="text" class="form-control" id="username" name="username"
+                                    value="{{ $account->username }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="text" class="form-control" id="password" name="password"
+                                    value="{{ $account->password }}">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
                     @endif
                 </div>
                 <!-- /.col-lg-12 -->
@@ -97,7 +103,7 @@
                             <th>Delete</th>
                         </thead>
                         <tbody>
-                            @if (isset($accounts))
+                            @if (isset($accounts) && count($accounts) > 0)
                                 @php $stt = 0 @endphp
                                 @foreach ($accounts as $account)
                                     @php $stt++ @endphp
@@ -106,7 +112,7 @@
                                         <td>{{ $account->username }}</td>
                                         <td>{{ $account->password }}</td>
                                         <td><a href="{{ route('account.edit', $account->id) }}"><i
-                                                class="fas fa-edit"></i></a></td>
+                                                    class="fas fa-edit"></i></a></td>
                                         <td>
                                             <form action="{{ route('account.destroy', $account->id) }}" method="POST"
                                                 onsubmit="return confirm('Bạn có chắc muốn xóa?');">
@@ -121,8 +127,16 @@
                                     </tr>
                                 @endforeach
                             @endif
+                            @if(isset($message))
+                            <tr>
+                                <td colspan="5" style="text-align: center;">{{$message}}</td>
+                            </tr>
+                            @endif
+               
                         </tbody>
+                      
                     </table>
+                    {{$accounts->appends(request()->all())->links()}}
                 </div>
             </div>
 

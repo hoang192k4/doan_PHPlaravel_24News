@@ -23,14 +23,23 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Quản lý người dùng đăng ký</h1>
-                    <div style="width:80%; margin:10px auto; ">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
+                    <div style="display: flex; align-items:center;margin-bottom:10px">
+                        <div style="width: 10%; display:flex;justify-content:space-around">
+                            <button style="padding:5px 0">
+                                <a style="padding :10px ;text-decoration:none;" href="{{ route('subscriber.index')}}"><i class="fas fa-sync"></i></a>
+                            </button>
+                        </div>
+                        <div style="width:90%; margin:0 auto; ">
+                            <form action="{{ route('subscriber.index') }}" method="GET">
+                                <div class="input-group custom-search-form">
+                                    <input type="text" class="form-control" value="{{request()->input('keyword')}}" placeholder="Search..." name="keyword">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     @if (session('success'))
@@ -95,8 +104,12 @@
                                     </tr>
                                 @endforeach
                             @endif
+                            @if(isset($message))
+                                <tr><td  colspan="3" style="text-align: center;">{{ $message }}</td></tr>
+                            @endif
                         </tbody>
                     </table>
+                    {{$subcribers->appends(request()->all())->links()}}
                 </div>
             </div>
 

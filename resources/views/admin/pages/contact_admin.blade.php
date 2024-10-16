@@ -23,16 +23,26 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Quản lý liên hệ</h1>
-                    <div style="width:80%; margin:10px auto; ">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
+                    <div style="display: flex; align-items:center;margin-bottom:10px">
+                        <div style="width: 10%; display:flex;justify-content:space-around">
+                            <button style="padding:5px 0">
+                                <a style="padding :10px ;text-decoration:none;" href="{{ route('contact.index')}}"><i class="fas fa-sync"></i></a>
+                            </button>
+                        </div>
+                        <div style="width:90%; margin:0 auto; ">
+                            <form action="{{ route('contact.index') }}" method="GET">
+                                <div class="input-group custom-search-form">
+                                    <input type="text" class="form-control" value="{{request()->input('keyword')}}" placeholder="Search..." name="keyword">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
                         </div>
                     </div>
+                </div>
                     @if (session('success'))
                         <h3 style="color: green">{{ session('success') }}</h3>
                     @endif
@@ -78,8 +88,14 @@
                                     </tr>
                                 @endforeach
                             @endif
+                            @if(isset($message))
+                            <tr>
+                                <td colspan="7" style="text-algin:center">{{ $message }}</td>
+                            </tr>
+                            @endif
                         </tbody>
                     </table>
+                    {{$contacts->appends(request()->all())->links()}}
                 </div>
             </div>
         </div>

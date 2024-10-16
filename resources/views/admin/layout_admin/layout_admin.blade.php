@@ -63,5 +63,19 @@
     <!-- Custom Theme JavaScript -->
     <script src="{{ asset('js/startmin.js') }}"></script>
 
+    <script src="{{asset('API\ckeditor\ckeditor.js')}}"></script>
+
+<script>
+	ClassicEditor
+		.create( document.querySelector( '#content' ), {
+			// toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+		} )
+		.then( editor => {
+			window.editor = editor;
+		} )
+		.catch( err => {
+			console.error( err.stack );
+		} );
+</script>
 </body>
 </html>

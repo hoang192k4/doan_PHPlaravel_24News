@@ -24,6 +24,13 @@
     <!-- Modernizr JS -->
     <script src="{{asset('js/modernizr-3.5.0.min.js')}}"></script>
 </head>
+<style>
+    @media only screen and (max-width:1023px){
+        .reponsiveinput{
+            display: none;
+        }
+    }
+</style>
 <body>
         {{--     header-user --}}
             @include('user.partials.header_user')

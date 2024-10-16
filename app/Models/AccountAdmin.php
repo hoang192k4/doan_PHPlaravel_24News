@@ -10,14 +10,13 @@ class AccountAdmin extends Model
 {
     public static function layAll()
     {
-        $accounts = DB::select('select * from account where status = ?', [1]);
+        $accounts = DB::table('account')->where('status',1)->paginate(10);
         return $accounts;
     }
     public static function addAccount($username ,$pwd){
         $add = DB::table('account')->insert([
             'username' => $username,
             'password' => $pwd,
-            'status' => 1
         ]);
         return $add;
     }
@@ -38,8 +37,15 @@ class AccountAdmin extends Model
         $edit = DB::table('account')->where('id', '=', $id)->update([
             'username' => $username,
             'password' => $password,
-            'status' => 1
         ]);
         return $edit;
+    }   
+
+    public static function search($keyword){
+        return DB::table('account')->where('status',1)
+        ->where(function($query) use ($keyword) {
+            $query->where('username','like',"%{$keyword}%")
+            ->orwhere('password','like',"%{$keyword}%");
+        })->paginate(10);       
     }
 }

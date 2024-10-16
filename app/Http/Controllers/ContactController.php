@@ -10,10 +10,14 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = ContactAdmin::layAll();
-        return view('admin.pages.contact_admin')->with("contacts", $contacts);
+        $keyword = $request->input('keyword');
+        $contacts = $keyword ? ContactAdmin::search($keyword) : ContactAdmin::layAll();
+        if ($contacts->isNotEmpty())
+            return view('admin.pages.contact_admin')->with("contacts", $contacts);
+        else
+            return view('admin.pages.contact_admin')->with("contacts", $contacts)->with('message', "Không tìm thấy kết quả tìm kiếm nào");
     }
 
     /**
@@ -29,7 +33,17 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->input('usernamecontact') && $request->input('emailcontact') && $request->input('subjectcontact') && $request->input('messagecontact')) {
+            $viewData = [];
+            $viewData['username'] = $request->input('usernamecontact');
+            $viewData['email'] = $request->input('emailcontact');
+            $viewData['subject'] = $request->input('subjectcontact');
+            $viewData['message'] = $request->input('messagecontact');
+            $result = ContactAdmin::create($viewData);
+            if($result)
+                return redirect()->route('contact');
+        } 
+        return redirect()->route('contact');
     }
 
     /**
@@ -62,10 +76,9 @@ class ContactController extends Controller
     public function destroy(string $id)
     {
         $result = ContactAdmin::deleteContact($id);
-        if ($result){
+        if ($result) {
             return redirect('admin/contact')->with("success", "Xóa thành công");
-        }
-        else
+        } else
             return redirect('admin/contact')->with("error", "Xóa không thành công");
     }
 }

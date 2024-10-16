@@ -18,16 +18,15 @@
                                 <i class="fa fa-comments fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">26</div>
-                                <div>New Comments!</div>
+                                <div class="huge">{{isset($countNews) ? $countNews : 0}}</div>
+                                <div>News!</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="{{route('news.index')}}">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
                             <div class="clearfix"></div>
                         </div>
                     </a>
@@ -38,19 +37,18 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-tasks fa-5x"></i>
+                                <i class="fas fa-id-card-alt fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">12</div>
-                                <div>New Tasks!</div>
+                                <div class="huge">{{ isset($countContact) ? $countContact : 0}}</div>
+                                <div>Contact!</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="{{route('contact.index')}}">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
                             <div class="clearfix"></div>
                         </div>
                     </a>
@@ -61,15 +59,15 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-shopping-cart fa-5x"></i>
+                                <i class="fas fa-registered fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">124</div>
-                                <div>New Orders!</div>
+                                <div class="huge">{{isset($countSubscriber) ? $countSubscriber : 0}}</div>
+                                <div>Subscriber!</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="{{route('subscriber.index')}}">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -84,15 +82,15 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-support fa-5x"></i>
+                                <i class="fas fa-ad fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">13</div>
-                                <div>Support Tickets!</div>
+                                <div class="huge">{{ isset($countAdvertisement) ? $countAdvertisement : 0}}</div>
+                                <div>Advertisement!</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="{{route('advertisement.index')}}">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

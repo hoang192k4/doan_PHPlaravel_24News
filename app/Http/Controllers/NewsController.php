@@ -12,10 +12,14 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $news = NewsAdmin::layAll();
-        return view('admin.pages.news_admin')->with("news", $news);
+        $keyword = $request->input('keyword');
+        $news = $keyword ? NewsAdmin::search($keyword) : NewsAdmin::layAll();
+        if ($news->isNotEmpty())
+            return view('admin.pages.news_admin')->with("news", $news);
+        else
+            return view('admin.pages.news_admin')->with("news", $news)->with('message', "Không tìm thấy kết quả tìm kiếm nào");
     }
 
     /**
@@ -33,25 +37,25 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $viewData = [];
-        $viewData['title'] = $request->input('title');
-        $viewData['author'] = $request->input('author');
-        $viewData['content'] = $request->input('content');
-        if ($request->hasFile('image')) {
-            $fileName = 'news_'.time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images'), $fileName);
-            $viewData['image'] = $fileName; 
-        } else {
-            $viewData['image'] = 'image' ;
-        }
-        $viewData['category'] = $request->input('category');
-        $viewData['view'] = 1;
-        $viewData['status'] = 1;
-        $result = NewsAdmin::store($viewData);
-        if ($result) {
-            return redirect('admin/news')->with("success", "Cập nhật thành công");
+        if ($request->input('title')&& $request->input('content')) {
+            $viewData = [];
+            $viewData['title'] = $request->input('title');
+            $viewData['author'] = $request->input('author');
+            $viewData['content'] = $request->input('content');
+            if ($request->hasFile('image')) {
+                $fileName = 'news_' . time() . '.' . $request->image->extension();
+                $request->image->move(public_path('images'), $fileName);
+                $viewData['image'] = $fileName;
+            } else {
+                $viewData['image'] = 'image';
+            }
+            $viewData['category'] = $request->input('category');
+            $result = NewsAdmin::store($viewData);
+            if ($result) {
+                return redirect('admin/news')->with("success", "Cập nhật thành công");
+            }
         } else
-            return redirect('admin/news')->with("error", "Cập không thành công"); 
+            return redirect('admin/news')->with("error", "Cập không thành công");
     }
 
     /**
@@ -79,33 +83,33 @@ class NewsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $viewData = [];
-        $viewData['title'] = $request->input('title');
-        $viewData['author'] = $request->input('author');
-        $viewData['content'] = $request->input('content');
-        $news = NewsAdmin::editGetId($id);
-        if ($request->hasFile('image')) {
-            // Xóa hình ảnh cũ nếu cần
-            if (isset($news->image) && file_exists(public_path('images/' . $news->image))) {
-                unlink(public_path('images/' . $news->image));
+        if ($request->input('title') &&  $request->input('content')) {
+            $viewData = [];
+            $viewData['title'] = $request->input('title');
+            $viewData['author'] = $request->input('author');
+            $viewData['content'] = $request->input('content');
+            $news = NewsAdmin::editGetId($id);
+            if ($request->hasFile('image')) {
+                // Xóa hình ảnh cũ nếu cần
+                if (isset($news->image) && file_exists(public_path('images/' . $news->image))) {
+                    unlink(public_path('images/' . $news->image));
+                }
+
+                // Lưu hình ảnh mới
+                $fileName = 'news_' . time() . '.' . $request->image->extension();
+                $request->image->move(public_path('images'), $fileName);
+                $viewData['image'] = $fileName; // Cập nhật tên hình ảnh mới vào viewData
+            } else {
+                // Nếu không có tệp mới, giữ lại tên tệp cũ
+                $viewData['image'] = $news->image; // Giữ lại tên hình ảnh cũ
             }
-    
-            // Lưu hình ảnh mới
-            $fileName = 'news_'.time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images'), $fileName);
-            $viewData['image'] = $fileName; // Cập nhật tên hình ảnh mới vào viewData
-        } else {
-            // Nếu không có tệp mới, giữ lại tên tệp cũ
-            $viewData['image'] = $news->image; // Giữ lại tên hình ảnh cũ
-        }
-        $viewData['category'] = $request->input('category');
-        $viewData['view'] = 1;
-        $viewData['status'] = 1;
-        $result = NewsAdmin::updateId($id, $viewData);
-        if ($result) {
-            return redirect('admin/news')->with("success", "Cập nhật thành công");
+            $viewData['category'] = $request->input('category');
+            $result = NewsAdmin::updateId($id, $viewData);
+            if ($result) {
+                return redirect('admin/news')->with("success", "Cập nhật thành công");
+            }
         } else
-            return redirect('admin/news')->with("error", "Cập không thành công"); 
+            return redirect('admin/news')->with("error", "Cập không thành công");
     }
 
     /**

@@ -29,20 +29,26 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">Category</h1>
                     <div style="display: flex; align-items:center;margin-bottom:10px">
-                        <div style="width: 19%">
-                            <button onclick="showhidden_category()" style="padding:5px 0">
+                        <div style="width: 19%; display:flex;justify-content:space-around">
+                            <button onclick="showhidden_category()()" style="padding:5px 0">
                                 <a style="padding :10px 50px;text-decoration:none;" href="#{{-- {{ route('category.create')}} --}}">Add</a>
+                            </button>
+                            <button style="padding:5px 0">
+                                <a style="padding :10px ;text-decoration:none;" href="{{ route('category.index') }}"><i class="fas fa-sync"></i></a>
                             </button>
                         </div>
                         <div style="width:80%; margin:0 auto; ">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
+                            <form action="{{ route('category.index') }}" method="GET">
+                                <div class="input-group custom-search-form">
+                                    <input type="text" class="form-control" value="{{ request()->input('keyword') }}"
+                                        placeholder="Search..." name="keyword">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     @if (session('success'))
@@ -107,8 +113,14 @@
                                     </tr>
                                 @endforeach
                             @endif
+                            @if (isset($message))
+                                <tr>
+                                    <td colspan="4" style="text-algin:center">{{ $message }}</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
+                    {{ $categorys->appends(request()->input('keyword'))->links() }}
                 </div>
             </div>
 

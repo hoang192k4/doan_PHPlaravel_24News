@@ -4,55 +4,59 @@
     </div>
     <div class="clearfix"></div>
     <div class="fh5co_tags_all">
-        <a href="#" class="fh5co_tagg">Business</a>
-        <a href="#" class="fh5co_tagg">Technology</a>
-        <a href="#" class="fh5co_tagg">Sport</a>
-        <a href="#" class="fh5co_tagg">Art</a>
-        <a href="#" class="fh5co_tagg">Lifestyle</a>
-        <a href="#" class="fh5co_tagg">Three</a>
-        <a href="#" class="fh5co_tagg">Photography</a>
-        <a href="#" class="fh5co_tagg">Lifestyle</a>
-        <a href="#" class="fh5co_tagg">Art</a>
-        <a href="#" class="fh5co_tagg">Education</a>
-        <a href="#" class="fh5co_tagg">Social</a>
-        <a href="#" class="fh5co_tagg">Three</a>
+        @foreach (App\Models\CategoryAdmin::layAllShow() as $category)
+            <a href="{{ route('blog_category', ['id' => $category->id]) }}" class="fh5co_tagg">{{ $category->category }}</a>
+        @endforeach
     </div>
     <div>
         <div class="fh5co_heading fh5co_heading_border_bottom pt-3 py-2 mb-4">Most Popular</div>
     </div>
+    {{-- hót nhất lĩnh vực game --}}
+    @foreach(App\Models\NewsAdmin::layMostPopular(1) as $new)
     <div class="row pb-3">
         <div class="col-5 align-self-center">
-            <img src="images/download (1).jpg" alt="img" class="fh5co_most_trading"/>
+           <a href="{{route('detail_blog',['id' => $new->id])}}"> <img src="{{asset('images/'.$new->image)}}" alt="img" class="fh5co_most_trading" /></a>
         </div>
         <div class="col-7 paddding">
-            <div class="most_fh5co_treding_font"> Magna aliqua ut enim ad minim veniam quis nostrud.</div>
-            <div class="most_fh5co_treding_font_123"> April 18, 2016</div>
+            <a href="{{route('detail_blog',['id' => $new->id])}}"><div class="most_fh5co_treding_font"> {{$new->title}}</div></a>
+            <div class="most_fh5co_treding_font_123">{{Carbon\Carbon::parse($new->adddate)->format("M d ,y")}}</div>
         </div>
     </div>
+    @endforeach
+    {{-- hót nhất lĩnh vực công nghệ --}}
+    @foreach(App\Models\NewsAdmin::layMostPopular(2) as $new)
     <div class="row pb-3">
         <div class="col-5 align-self-center">
-            <img src="images/allef-vinicius-108153.jpg" alt="img" class="fh5co_most_trading"/>
+           <a href="{{route('detail_blog',['id' => $new->id])}}"> <img src="{{asset('images/'.$new->image)}}" alt="img" class="fh5co_most_trading" /></a>
         </div>
         <div class="col-7 paddding">
-            <div class="most_fh5co_treding_font"> Enim ad minim veniam nostrud xercitation ullamco.</div>
-            <div class="most_fh5co_treding_font_123"> April 18, 2016</div>
+            <a href="{{route('detail_blog',['id' => $new->id])}}"><div class="most_fh5co_treding_font"> {{$new->title}}</div></a>
+            <div class="most_fh5co_treding_font_123">{{Carbon\Carbon::parse($new->adddate)->format("M d ,y")}}</div>
         </div>
     </div>
+    @endforeach
+    {{-- Hót nhất lĩnh vực âm nhạc --}}
+    @foreach(App\Models\NewsAdmin::layMostPopular(3) as $new)
     <div class="row pb-3">
         <div class="col-5 align-self-center">
-            <img src="images/download (2).jpg" alt="img" class="fh5co_most_trading"/>
+           <a href="{{route('detail_blog',['id' => $new->id])}}"> <img src="{{asset('images/'.$new->image)}}" alt="img" class="fh5co_most_trading" /></a>
         </div>
         <div class="col-7 paddding">
-            <div class="most_fh5co_treding_font"> Magna aliqua ut enim ad minim veniam quis nostrud.</div>
-            <div class="most_fh5co_treding_font_123"> April 18, 2016</div>
+            <a href="{{route('detail_blog',['id' => $new->id])}}"><div class="most_fh5co_treding_font"> {{$new->title}}</div></a>
+            <div class="most_fh5co_treding_font_123">{{Carbon\Carbon::parse($new->adddate)->format("M d ,y")}}</div>
         </div>
     </div>
+    @endforeach
+    {{-- Hót nhất lĩnh vực thế giưới --}}
+    @foreach(App\Models\NewsAdmin::layMostPopular(8) as $new)
     <div class="row pb-3">
-        <div class="col-5 align-self-center"><img src="images/seth-doyle-133175.jpg" alt="img"
-                                                  class="fh5co_most_trading"/></div>
+        <div class="col-5 align-self-center">
+           <a href="{{route('detail_blog',['id' => $new->id])}}"> <img src="{{asset('images/'.$new->image)}}" alt="img" class="fh5co_most_trading" /></a>
+        </div>
         <div class="col-7 paddding">
-            <div class="most_fh5co_treding_font"> Magna aliqua ut enim ad minim veniam quis nostrud.</div>
-            <div class="most_fh5co_treding_font_123"> April 18, 2016</div>
-        </div> 
+            <a href="{{route('detail_blog',['id' => $new->id])}}"><div class="most_fh5co_treding_font"> {{$new->title}}</div></a>
+            <div class="most_fh5co_treding_font_123">{{Carbon\Carbon::parse($new->adddate)->format("M d ,y")}}</div>
+        </div>
     </div>
+    @endforeach
 </div>

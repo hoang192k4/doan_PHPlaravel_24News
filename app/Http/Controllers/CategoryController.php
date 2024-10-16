@@ -4,24 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CategoryAdmin;
+
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categorys = CategoryAdmin::layAll();
-        return view('admin.pages.category_admin')->with("categorys", $categorys);
+        $keyword = $request->input('keyword');
+        $categorys = $keyword ? CategoryAdmin::search($keyword) : CategoryAdmin::layAll();
+        if ($categorys->isNotEmpty())
+            return view('admin.pages.category_admin')->with("categorys", $categorys);
+        else
+            return view('admin.pages.category_admin')->with("categorys", $categorys)->with('message', "Không tìm thấy kết quả tìm kiếm");
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-      
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -30,10 +32,9 @@ class CategoryController extends Controller
     {
         $category = $request->input('category');
         $result = CategoryAdmin::store($category);
-        if ($result){
+        if ($result) {
             return redirect('admin/category')->with("success", "Thêm mới thành công");
-        }
-        else
+        } else
             return redirect('admin/category')->with("error", "Thêm mới không thành công");
     }
 
@@ -61,11 +62,10 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $category = $request->input('category');
-        $result = CategoryAdmin::updateId($id,$category);
-        if ($result){
+        $result = CategoryAdmin::updateId($id, $category);
+        if ($result) {
             return redirect('admin/category')->with("success", "Cập nhật thành công");
-        }
-        else
+        } else
             return redirect('admin/category')->with("error", "Cập nhật không thành công");
     }
 
@@ -75,10 +75,9 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         $result = CategoryAdmin::deleteCategory($id);
-        if ($result){
+        if ($result) {
             return redirect('admin/category')->with("success", "Xóa thành công");
-        }
-        else
+        } else
             return redirect('admin/category')->with("error", "Xóa không thành công");
     }
 }

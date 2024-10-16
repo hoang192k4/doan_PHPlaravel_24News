@@ -113,6 +113,9 @@
             <li>
                 <a href="{{route('contact.index')}}"><i class="far fa-address-card" style="font-size:15px ; padding:0 3px;"></i>Contact</a>
             </li>
+            <li>
+                <a href="{{route('advertisement.index')}}"><i class="fas fa-ad" style="font-size:15px ; padding:0 3px;"></i>Advertisement</a>
+            </li>
         </ul>
-    </div>
+    </div>  
 </aside>

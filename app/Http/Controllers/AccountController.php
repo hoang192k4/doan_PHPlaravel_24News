@@ -10,19 +10,22 @@ class AccountController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $accounts = AccountAdmin::layAll();
-        return view('admin.pages.account_admin')->with("accounts", $accounts);
+        $keyword = $request->input('keyword'); 
+        $accounts = $keyword ? AccountAdmin::search($keyword) : AccountAdmin::layAll();
+        if ($accounts->isNotEmpty()) {
+            return view('admin.pages.account_admin')->with("accounts", $accounts);
+        } else {
+            $message = "Không có kết quả tìm kiếm";
+            return view('admin.pages.account_admin')->with("accounts", $accounts)->with('message', $message);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-    }
 
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -30,20 +33,18 @@ class AccountController extends Controller
     {
         $username = $request->input('username');
         $pwd = $request->input('password');
-        $result = AccountAdmin::addAccount($username,$pwd);
-        if ($result){
+        $result = AccountAdmin::addAccount($username, $pwd);
+        if ($result) {
             return redirect('admin/account')->with("success", "Thêm account thành công");
-        }
-        else
+        } else
             return redirect('admin/account')->with("error", "Thêm account không thành công");
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
+    public function show(string $id) {
+        
     }
 
     /**
@@ -53,7 +54,7 @@ class AccountController extends Controller
     {
         $accounts = AccountAdmin::layAll();
         $account = AccountAdmin::editGetAccount($id);
-        return view('admin.pages.account_admin')->with('accounts',$accounts)->with('account', $account);
+        return view('admin.pages.account_admin')->with('accounts', $accounts)->with('account', $account);
     }
 
     /**
@@ -63,11 +64,10 @@ class AccountController extends Controller
     {
         $username = $request->input('username');
         $pwd = $request->input('password');
-        $result = AccountAdmin::editAccount($id,$username,$pwd);
-        if ($result){
+        $result = AccountAdmin::editAccount($id, $username, $pwd);
+        if ($result) {
             return redirect('admin/account')->with("success", "Cập nhật thành công");
-        }
-        else
+        } else
             return redirect('admin/account')->with("error", "Cập nhật không thành công");
     }
 
@@ -77,10 +77,9 @@ class AccountController extends Controller
     public function destroy(string $id)
     {
         $result = AccountAdmin::deleteAccount($id);
-        if ($result){
+        if ($result) {
             return redirect('admin/account')->with("success", "Xóa thành công");
-        }
-        else
+        } else
             return redirect('admin/account')->with("error", "Xóa không thành công");
     }
 }

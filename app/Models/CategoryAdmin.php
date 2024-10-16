@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\DB;
 class CategoryAdmin extends Model
 {
     public static function layAll(){
-        return DB::table('category')->where('status','=',1)->get();
+        return DB::table('category')->where('status','=',1)->paginate(10);  
     }
-
+    public static function layAllShow(){
+        return DB::table('category')->where('status','=',1)->get();  
+    }
     public static function store($category){
         return DB::table('category')->insert(['category' => $category , 'status' => 1]);
     }
@@ -26,5 +28,9 @@ class CategoryAdmin extends Model
 
     public static function deleteCategory($id){
         return DB::table('category')->where('id',$id)->update(['status' => 0]);
+    }
+
+    public static function search($keyword){
+        return DB::table('category')->where('status',1)->Where('category','like',"%{$keyword}%")->paginate(10);
     }
 }
